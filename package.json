@@ -1,0 +1,19 @@
+{
+  "name": "resource-juggling",
+  "description": "Easy REST for JugglingDB ORM and Express",
+  "keywords": ["rest", "resource", "jugglingdb", "orm", "express"],
+  "author": "Henri Bergius",
+  "version": "0.0.1",
+  "licenses": [{
+    "type": "MIT",
+  }],
+  "engine": {
+    "node": ">=0.4"
+  },
+  "dependencies": {
+    "coffee-script": ">=1.2.0",
+    "express-resource": ">=0.2.4",
+    "jugglingdb": ">=0.0.7",
+  },
+  "main": "./lib/resource-juggling.coffee"
+}
