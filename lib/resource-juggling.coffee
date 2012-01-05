@@ -1,4 +1,5 @@
 exports.contentNegotiator = (req, res, next) ->
+  return next() unless req.acceptableTypes
   for type in req.acceptableTypes
     if this.html and type is 'text/html'
       return this.html req, res, next
@@ -9,14 +10,16 @@ exports.contentNegotiator = (req, res, next) ->
 exports.getResource = (options) ->
   throw 'No schema defined' unless options.schema
   throw 'No schema name defined' unless options.name
+  throw 'No schema model defined' unless options.model
   options.urlName ?= options.name
   options.where ?= 'id'
+  options.addPlaceholderForEmpty ?= false
 
   if options.collection
     collectionIsRelation = true
   else
     collectionIsRelation = false
-    options.collection ?= options.schema[options.name]
+    options.collection ?= options.model
 
   options.toJSON ?= (items, req) -> items
 
@@ -31,7 +34,7 @@ exports.getResource = (options) ->
 
     constraints =
       where: constraints
-    options.schema[options.name].all constraints, (err, items) ->
+    options.model.all constraints, (err, items) ->
       items = [] unless items
       callback err, items
 
@@ -48,10 +51,11 @@ exports.getResource = (options) ->
     index:
       html: (req, res) ->
         seek {}, (err, items) ->
-          unless items.length
+          if options.addPlaceholderForEmpty and items.length is 0
             blankItem = {}
-            for property, defs of options.schema.schema.definitions[options.name].properties
+            for property, defs of options.schema.definitions[options.name].properties
               blankItem[property] = ''
+            items.push blankItem
 
           res.render "#{options.urlName}/index",
             locals:
