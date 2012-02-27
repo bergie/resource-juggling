@@ -55,6 +55,7 @@ exports.getResource = (options) ->
             blankItem = {}
             for property, defs of options.schema.definitions[options.name].properties
               blankItem[property] = ''
+            blankItem['id'] = 'mgd:placeholder'
             items.push blankItem
 
           res.render "#{options.urlName}/index",
