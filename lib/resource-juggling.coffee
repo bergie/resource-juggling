@@ -23,34 +23,37 @@ exports.getResource = (options) ->
 
   options.toJSON ?= (items, req) -> items
 
-  seek = (constraints, callback) ->
+  seek = (request, constraints, callback) ->
     if collectionIsRelation
-      options.collection
+      collection = options.collection
+      if typeof options.collection is 'function'
+        collection = options.collection request
+      collection
         where: constraints
       , (err, items) ->
         items = [] unless items
         callback err, items
       return
 
-    constraints =
+    options.model.all
       where: constraints
-    options.model.all constraints, (err, items) ->
+    , (err, items) ->
       items = [] unless items
       callback err, items
 
   resource =
     id: options.urlName
 
-    load: (where, callback) ->
+    load: (request, where, callback) ->
       whereQuery = {}
       whereQuery[options.where] = where
-      seek whereQuery, (err, items) ->
+      seek request, whereQuery, (err, items) ->
         return callback err if err
         callback null, items[0]
 
     index:
       html: (req, res) ->
-        seek {}, (err, items) ->
+        seek req, {}, (err, items) ->
           if options.addPlaceholderForEmpty and items.length is 0
             blankItem = {}
             for property, defs of options.schema.definitions[options.name].properties
@@ -63,11 +66,18 @@ exports.getResource = (options) ->
               items: items
               as: 'item'
       json: (req, res) ->
-        seek {}, (err, items) ->
+        seek req, {}, (err, items) ->
           res.send options.toJSON items, req
       default: exports.contentNegotiator
 
     create: (req, res) ->
+      if collectionIsRelation
+        newItem = options.collection.build()
+        for property, value of req.body
+          newItem[property] = value
+        newItem.save (err, item) ->
+          res.send options.toJSON item, req
+        return
       options.collection.create req.body, (err, item) ->
         res.send options.toJSON item, req
 
@@ -77,7 +87,7 @@ exports.getResource = (options) ->
 
     destroy: (req, res) ->
       req[options.urlName].destroy (err, item) ->
-        res.send options.toJSON item, req
+        res.send options.toJSON req[options.urlName], req
 
     show:
       html: (req, res) ->
