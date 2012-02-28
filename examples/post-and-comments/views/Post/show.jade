@@ -1,0 +1,8 @@
+- var url = '/' + item.id;
+- var commentsUrl = url + '/comments';
+article
+  h1
+    a(href=url) !{item.title}
+  div !{item.content}
+  div
+    a(href=commentsUrl) Comments
