@@ -13,7 +13,7 @@
   "dependencies": {
     "coffee-script": ">=1.2.0",
     "express-resource": ">=0.2.4",
-    "jugglingdb": ">=0.0.7"
+    "jugglingdb": ">=0.1.0"
   },
   "main": "./lib/resource-juggling.coffee",
   "repository": {
