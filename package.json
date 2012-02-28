@@ -5,7 +5,7 @@
   "author": "Henri Bergius",
   "version": "0.0.1",
   "licenses": [{
-    "type": "MIT",
+    "type": "MIT"
   }],
   "engine": {
     "node": ">=0.4"
@@ -13,7 +13,11 @@
   "dependencies": {
     "coffee-script": ">=1.2.0",
     "express-resource": ">=0.2.4",
-    "jugglingdb": ">=0.0.7",
+    "jugglingdb": ">=0.0.7"
   },
-  "main": "./lib/resource-juggling.coffee"
+  "main": "./lib/resource-juggling.coffee",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bergie/resource-juggling.git"
+  }
 }
