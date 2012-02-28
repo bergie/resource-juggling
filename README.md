@@ -39,11 +39,11 @@ Set up your JugglingDB models:
     # Define some relationships
     Post.hasMany Comment,
       as: 'comments'
-      foreignKey: 'post'
+      foreignKey: 'postId'
 
     Comment.belongsTo Post,
       as: 'post'
-      foreignKey: 'post'
+      foreignKey: 'postId'
 
 Note: In this example we're only showing two models and a relation between them. You can of course add as many models and as deep relationships as you need for your application.
 
@@ -59,10 +59,12 @@ Create routes for your models:
       schema: schema
       name: 'Post'
 
-    # Comments are under posts
+    # Comments are under posts, so we use request.Post.comments
+    # as the collection
     comments = app.resource 'posts', resourceJuggling.getResource
       schema: schema
       name: 'Comment'
+      collection: (request) -> request.Post.comments
     posts.add comments
 
 ...and that is it! You have just defined a content model with Posts and Comments, and built all the necessary RESTful routes for them.
