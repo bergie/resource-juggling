@@ -23,7 +23,7 @@ exports.getResource = (options) ->
 
   options.toJSON ?= (items, req) -> items
 
-  seek = (request, constraints, callback) ->
+  options.seek ?= (request, constraints, callback) ->
     if collectionIsRelation
       collection = options.collection
       if typeof options.collection is 'function'
@@ -33,6 +33,11 @@ exports.getResource = (options) ->
       , (err, items) ->
         items = [] unless items
         callback err, items
+      return
+
+    if constraints.id
+      options.model.find constraints.id, (err, item) ->
+        callback err, [item]
       return
 
     options.model.all
@@ -47,13 +52,13 @@ exports.getResource = (options) ->
     load: (request, where, callback) ->
       whereQuery = {}
       whereQuery[options.where] = where
-      seek request, whereQuery, (err, items) ->
+      options.seek request, whereQuery, (err, items) ->
         return callback err if err
         callback null, items[0]
 
     index:
       html: (req, res) ->
-        seek req, {}, (err, items) ->
+        options.seek req, {}, (err, items) ->
           if options.addPlaceholderForEmpty and items.length is 0
             blankItem = {}
             for property, defs of options.schema.definitions[options.name].properties
@@ -66,7 +71,7 @@ exports.getResource = (options) ->
               items: items
               as: 'item'
       json: (req, res) ->
-        seek req, {}, (err, items) ->
+        options.seek req, {}, (err, items) ->
           res.send options.toJSON items, req
       default: exports.contentNegotiator
 
@@ -98,3 +103,6 @@ exports.getResource = (options) ->
       json: (req, res) ->
         res.send options.toJSON req[options.urlName], req
       default: exports.contentNegotiator
+
+  resource.base = options.base if options.base
+  resource
