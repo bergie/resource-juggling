@@ -81,3 +81,16 @@ By default all routes can serve both JSON and HTML. For HTML, however, you must 
 * `views/{model}/show.{ext}` for the template showing individual items
 
 So, for a comment and Jade templating these would be `views/Comment/index.jade` and `views/Comment/show.jade`.
+
+### Setting URL prefixes to resources
+
+There are situations where you want to have custom URL prefixes for various resources. This can be done easily by passing the prefix as the `base` argument when instantiating a resource.
+
+For example:
+
+    server.resource 'user', resourceJuggling.getResource
+      schema: schema
+      name: 'User'
+      base: '/system/'
+
+In this situation users index would be located in `/system/user`, an individual user at `/system/user/1` etc.
