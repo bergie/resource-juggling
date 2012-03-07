@@ -69,6 +69,10 @@ Create routes for your models:
 
 ...and that is it! You have just defined a content model with Posts and Comments, and built all the necessary RESTful routes for them.
 
+Get resource-juggling with:
+
+    $ npm install resource-juggling
+
 ## Routing
 
 Now you can find all the posts with a GET to `/`, or add a new one with a POST to the same URL. Individual posts are accessible for GET, PUT, and DELETE at `/{postId}`.
