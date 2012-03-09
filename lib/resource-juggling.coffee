@@ -77,7 +77,10 @@ exports.getResource = (options) ->
 
     create: (req, res) ->
       if collectionIsRelation
-        newItem = options.collection.build()
+        collection = options.collection
+        if typeof options.collection is 'function'
+          collection = options.collection req
+        newItem = collection.build()
         for property, value of req.body
           newItem[property] = value
         newItem.save (err, item) ->
