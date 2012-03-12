@@ -53,7 +53,7 @@ exports.getResource = (options) ->
       whereQuery = {}
       whereQuery[options.where] = where
       options.seek request, whereQuery, (err, items) ->
-        return callback err if err
+        return callback err, null if err
         callback null, items[0]
 
     index:
