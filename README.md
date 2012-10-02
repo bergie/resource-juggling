@@ -17,6 +17,8 @@ resource = require 'express-resource'
 resourceJuggling = require 'resource-juggling'
 ```
 
+**Note:** examples in this README are in CoffeeScript, but the library works just fine also with plain-JavaScript Node.js applications.
+
 Set up your JugglingDB models:
 
 ```coffeescript
