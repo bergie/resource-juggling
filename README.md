@@ -1,8 +1,6 @@
 resource-juggling: Easy REST for JugglingDB and Express
 =======================================================
 
-**Note**: resource-juggling is still in a quite early stage of development.
-
 *resource-juggling* is a utility that connects two excellent Node.js libraries:
 
 * [JugglingDB](https://github.com/1602/jugglingdb) - cross database ORM
