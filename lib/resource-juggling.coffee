@@ -5,12 +5,12 @@ exports.contentNegotiator = (req, res, next) ->
       return this.html req, res, next
     if this.json and type is 'application/json'
       return this.json req, res, next
-  next() 
+  next()
 
 exports.getResource = (options) ->
-  throw 'No schema defined' unless options.schema
-  throw 'No schema name defined' unless options.name
-  throw 'No schema model defined' unless options.model
+  throw new Error 'No schema defined' unless options.schema
+  throw new Error 'No schema name defined' unless options.name
+  throw new Error 'No schema model defined' unless options.model
   options.urlName ?= options.name
   options.where ?= 'id'
   options.addPlaceholderForEmpty ?= false
@@ -61,7 +61,8 @@ exports.getResource = (options) ->
         options.seek req, {}, (err, items) ->
           if options.addPlaceholderForEmpty and items.length is 0
             blankItem = {}
-            for property, defs of options.schema.definitions[options.name].properties
+            properties = options.schema.definitions[options.name].properties
+            for property, defs of properties
               blankItem[property] = ''
             blankItem['id'] = 'mgd:placeholder'
             items.push blankItem

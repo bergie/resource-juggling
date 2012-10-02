@@ -15,6 +15,9 @@
     "express-resource": ">=0.2.4",
     "jugglingdb": ">=0.1.0"
   },
+  "devDependencies": {
+    "coffeelint": "*"
+  },
   "main": "./lib/resource-juggling.coffee",
   "repository": {
     "type": "git",
