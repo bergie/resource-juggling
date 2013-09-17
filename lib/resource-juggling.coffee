@@ -40,11 +40,14 @@ exports.getResource = (options) ->
         callback err, [item]
       return
 
-    options.model.all
-      where: constraints
-    , (err, items) ->
+    notifyCallback = (err, items) ->
       items = [] unless items
       callback err, items
+
+    if(constraints.length)
+      options.model.all where: constraints, notifyCallback
+    else
+      options.model.all notifyCallback
 
   resource =
     id: options.urlName
