@@ -24,19 +24,15 @@ exports.getResource = (options) ->
   options.toJSON ?= (items, req) -> items
 
   options.seek ?= (request, constraints, callback) ->
-    notifyCallback = (err, items) ->
-      items = [] unless items
-      callback err, items
-
     if collectionIsRelation
       collection = options.collection
       if typeof options.collection is 'function'
         collection = options.collection request
-
-      if(constraints.length)
-        collection where: constraints, notifyCallback
-      else
-        collection notifyCallback
+      collection
+        where: constraints if Object.keys(constraints).length
+      , (err, items) ->
+        items = [] unless items
+        callback err, items
       return
 
     if constraints.id
@@ -44,10 +40,11 @@ exports.getResource = (options) ->
         callback err, [item]
       return
 
-    if(constraints.length)
-      options.model.all where: constraints, notifyCallback
-    else
-      options.model.all notifyCallback
+    options.model.all
+      where: constraints if Object.keys(constraints).length
+    , (err, items) ->
+      items = [] unless items
+      callback err, items
 
   resource =
     id: options.urlName
