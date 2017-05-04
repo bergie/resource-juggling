@@ -1,6 +1,8 @@
 resource-juggling: Easy REST for JugglingDB and Express
 =======================================================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bergie/resource-juggling.svg)](https://greenkeeper.io/)
+
 *resource-juggling* is a utility that connects two excellent Node.js libraries:
 
 * [JugglingDB](https://github.com/1602/jugglingdb) - cross database ORM
