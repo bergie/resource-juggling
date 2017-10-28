@@ -16,7 +16,7 @@
     "jugglingdb": ">=0.1.0"
   },
   "devDependencies": {
-    "coffeelint": "*"
+    "coffeelint": ">=2.0.7"
   },
   "main": "./index.js",
   "repository": {
